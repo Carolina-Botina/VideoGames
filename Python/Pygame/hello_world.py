@@ -18,6 +18,13 @@ width=800
 height=400
 mywindow = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Number race v 1.0')
+
+#Cargar imagen
+icon=pygame.image.load('images/controller.png')
+
+#Setear imagen
+pygame.display.set_icon(icon)
+
 #Setear colores R(red) G(green) B(blue) => HxD
 #RGB => 0-255
 white=pygame.Color(255,255,255)
