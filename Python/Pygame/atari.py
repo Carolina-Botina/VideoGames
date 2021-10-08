@@ -87,7 +87,10 @@ game_clock=pygame.time.Clock()  #Reloj del juego
 pygame.key.set_repeat(20)
 ball=Ball()
 player=Bar()
-wall=Wall(112)
+
+totalBricks = int(input("Digite la cantidad de ladrillos:"))
+
+wall=Wall(totalBricks)
 
 #Loop (Revisión cíclica de los eventos) => Listener
 while True:
@@ -105,10 +108,24 @@ while True:
 
     #Collision between bar and ball
     #Cambio de trayectoria de la bola
-    if pygame.sprite.collide_rect(ball,player):
+    if pygame.sprite.collide_rect(ball,player): #PLayer is the bar
         ball.speed[1] = -ball.speed[1]
 
-    #Collision between ball and wall
+    #Collision between ball and wall (Bricks) Destroy bricks
+    elements = pygame.sprite.spritecollide(ball,wall,False,collided=None)
+    if elements: #Mientras existan ladrillos para chocar
+        brick = elements[0]
+        centX = ball.rect.centerx
+
+        if centX < brick.rect.left or centX > brick.rect.right:
+            #Afectamos velocidad
+            ball.speed[0] = -ball.speed[0]
+        else:
+            #Afectamos trayectoria
+            ball.speed[1] = -ball.speed[1]
+        wall.remove(brick)
+
+
 
 
 
