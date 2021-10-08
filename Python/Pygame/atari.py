@@ -19,14 +19,15 @@ class Ball(pygame.sprite.Sprite):
         self.rect=self.img_ball.get_rect()
         self.rect.centerx=WIDTH / 2
         self.rect.centery=HEIGHT / 2
-        self.speed=[5,5] #[ ]
+        #A mayor amplitud rebote afecta eje Y y a menor amplitud rebote afect eje X
+        self.speed=[5,5] #[Param1->Veloc del mov. /Param2 -> Amplitud del mov. ] -> Concepto de las físicas
 
     def pibot(self):
         #Validate Y !¡
         if self.rect.bottom >= HEIGHT or self.rect.top <=0:
             self.speed[1] = -self.speed[1]
         #Validate x <- X ->
-        elif self.rect.right >= WIDTH or self.rect.top <=0:
+        elif self.rect.right >= WIDTH or self.rect.left <=0:
             self.speed[0] = -self.speed[0]
 
         self.rect.move_ip(self.speed)
@@ -82,7 +83,8 @@ pygame.display.set_caption('Atari')
 icon=pygame.image.load('images/controller.png')
 pygame.display.set_icon(icon)
 
-game_clock=pygame.time.Clock() #Reloj del juego
+game_clock=pygame.time.Clock()  #Reloj del juego
+pygame.key.set_repeat(20)
 ball=Ball()
 player=Bar()
 wall=Wall(112)
@@ -100,6 +102,16 @@ while True:
             player.slide(event)
     #Call pibot
     ball.pibot()
+
+    #Collision between bar and ball
+    #Cambio de trayectoria de la bola
+    if pygame.sprite.collide_rect(ball,player):
+        ball.speed[1] = -ball.speed[1]
+
+    #Collision between ball and wall
+
+
+
     #Set background color
     screen.fill(BG_COLOR)
     #Draw de la ball
