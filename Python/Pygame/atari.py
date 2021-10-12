@@ -5,8 +5,10 @@
 '''
 
 #Importar librerias
+from typing import Text
 import pygame
 import sys
+import time
 
 pygame.init()
 #############################
@@ -71,6 +73,20 @@ class Wall(pygame.sprite.Group):
             if posX >= WIDTH:
                 posX=0
                 posY+=brick.rect.height
+
+
+def game_over():
+    msg = 'Perdiste. Vuelve a intentarlo'
+    text_color=(130, 190, 67)
+    text_style = pygame.font.SysFont('Arial',30) #(tipo de letra, tamaño)
+    txt_screen = text_style.render(msg, True, text_color)
+    txt_screen_rect = txt_screen.get_rect()
+    txt_screen_rect.center = [WIDTH/2,HEIGHT/2]
+    screen.blit(txt_screen,txt_screen_rect)
+    pygame.display.flip()
+    time.sleep(3)
+    sys.exit()
+
 #######################################################
 
 #General settings
@@ -87,8 +103,8 @@ game_clock=pygame.time.Clock()  #Reloj del juego
 pygame.key.set_repeat(20)
 ball=Ball()
 player=Bar()
-
-totalBricks = int(input("Digite la cantidad de ladrillos:"))
+totalBricks=112
+#totalBricks = int(input("Digite la cantidad de ladrillos:"))
 
 wall=Wall(totalBricks)
 
@@ -125,7 +141,9 @@ while True:
             ball.speed[1] = -ball.speed[1]
         wall.remove(brick)
 
-
+    #Call the function game over
+    if ball.rect.bottom >= HEIGHT:
+        game_over()
 
 
 
