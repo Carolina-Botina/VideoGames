@@ -87,6 +87,10 @@ def game_over():
     time.sleep(3)
     sys.exit()
 
+
+#def set_score(score):
+
+
 #######################################################
 
 #General settings
@@ -105,8 +109,8 @@ ball=Ball()
 player=Bar()
 totalBricks=112
 #totalBricks = int(input("Digite la cantidad de ladrillos:"))
-
 wall=Wall(totalBricks)
+score = 0
 
 #Loop (Revisión cíclica de los eventos) => Listener
 while True:
