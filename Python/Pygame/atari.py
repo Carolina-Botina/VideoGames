@@ -85,7 +85,7 @@ def game_over():
     screen.blit(txt_screen,txt_screen_rect)
     pygame.display.flip()
     time.sleep(3)
-    sys.exit()
+    #sys.exit()
 
 
 #def set_score(score):
@@ -105,11 +105,27 @@ pygame.display.set_icon(icon)
 
 game_clock=pygame.time.Clock()  #Reloj del juego
 pygame.key.set_repeat(20)
+
+
+print("---- MENÚ NIVEL DE JUEGO----")
+print("---- 1. NIVEL NORMAL")
+print("---- 2. NIVEL INTERMEDIO")
+print("---- 3. NIVEL AVANZADO")
+opt = int(input("Seleccione el nivel: "))
+
+if opt==1:
+    ladrillos=20
+elif opt==2:
+    ladrillos=100
+elif opt==3:
+    ladrillos=200
+else:
+    print("Opción invalida.")
+    sys.exit()
+
 ball=Ball()
 player=Bar()
-totalBricks=112
-#totalBricks = int(input("Digite la cantidad de ladrillos:"))
-wall=Wall(totalBricks)
+wall=Wall(ladrillos)
 score = 0
 
 #Loop (Revisión cíclica de los eventos) => Listener
