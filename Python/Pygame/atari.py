@@ -5,6 +5,7 @@
 '''
 
 #Importar librerias
+import os
 from typing import Text
 import pygame
 import sys
@@ -88,8 +89,13 @@ def game_over():
     #sys.exit()
 
 
-#def set_score(score):
-
+def set_score():
+    text_color=(130, 190, 67)
+    text_style = pygame.font.SysFont('Arial',30) #(tipo de letra, tamaño)
+    txt_screen = text_style.render(str(score).zfill(5), True, text_color)
+    txt_screen_rect = txt_screen.get_rect()
+    txt_screen_rect.topleft = [1,400]
+    screen.blit(txt_screen,txt_screen_rect)
 
 #######################################################
 
@@ -111,7 +117,13 @@ print("---- MENÚ NIVEL DE JUEGO----")
 print("---- 1. NIVEL NORMAL")
 print("---- 2. NIVEL INTERMEDIO")
 print("---- 3. NIVEL AVANZADO")
-opt = int(input("Seleccione el nivel: "))
+print("---- 4. SALIR")
+
+status = True
+while status:
+    opt = int(input("Seleccione el nivel: "))
+    if opt >= 1 and opt <=4:
+        status = False
 
 if opt==1:
     ladrillos=20
@@ -119,8 +131,13 @@ elif opt==2:
     ladrillos=100
 elif opt==3:
     ladrillos=200
+elif opt==4:
+    print("Has salido del juego.")
+    time.sleep(4)
+    sys.exit()
 else:
     print("Opción invalida.")
+    time.sleep(4)
     sys.exit()
 
 ball=Ball()
@@ -160,6 +177,7 @@ while True:
             #Afectamos trayectoria
             ball.speed[1] = -ball.speed[1]
         wall.remove(brick)
+        score += 1
 
     #Call the function game over
     if ball.rect.bottom >= HEIGHT:
@@ -169,6 +187,7 @@ while True:
 
     #Set background color
     screen.fill(BG_COLOR)
+    set_score()
     #Draw de la ball
     screen.blit(ball.img_ball,ball.rect)
     #Draw de la bar
