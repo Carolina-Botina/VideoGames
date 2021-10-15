@@ -85,16 +85,26 @@ def game_over():
     txt_screen_rect.center = [WIDTH/2,HEIGHT/2]
     screen.blit(txt_screen,txt_screen_rect)
     pygame.display.flip()
-    time.sleep(3)
+    time.sleep(5)
     #sys.exit()
 
 
 def set_score():
     text_color=(130, 190, 67)
     text_style = pygame.font.SysFont('Arial',30) #(tipo de letra, tamaño)
-    txt_screen = text_style.render(str(score).zfill(5), True, text_color)
+    txt_screen = text_style.render(str(score).zfill(3), True, text_color)
     txt_screen_rect = txt_screen.get_rect()
     txt_screen_rect.topleft = [1,400]
+    screen.blit(txt_screen,txt_screen_rect)
+
+def set_lives():
+    label = "Vidas: "
+    text_color=(130, 190, 67)
+    text_style = pygame.font.SysFont('Arial',20)
+    text = label + str(player_lives).zfill(1)
+    txt_screen = text_style.render(text, True, text_color)
+    txt_screen_rect = txt_screen.get_rect()
+    txt_screen_rect.topleft = [500,400]
     screen.blit(txt_screen,txt_screen_rect)
 
 #######################################################
@@ -144,6 +154,7 @@ ball=Ball()
 player=Bar()
 wall=Wall(ladrillos)
 score = 0
+player_lives = 5
 
 #Loop (Revisión cíclica de los eventos) => Listener
 while True:
@@ -180,14 +191,20 @@ while True:
         score += 1
 
     #Call the function game over
+    '''if ball.rect.bottom >= HEIGHT:
+        game_over()'''
+
+    #Restar vidas        
     if ball.rect.bottom >= HEIGHT:
+        player_lives -= 1
+
+    if player_lives == 0:
         game_over()
-
-
 
     #Set background color
     screen.fill(BG_COLOR)
     set_score()
+    set_lives()
     #Draw de la ball
     screen.blit(ball.img_ball,ball.rect)
     #Draw de la bar
