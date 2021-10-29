@@ -12,6 +12,7 @@ import sys
 import time
 
 pygame.init()
+pygame.mixer.init()
 #############################
 #Classes
 #############################
@@ -77,7 +78,7 @@ class Wall(pygame.sprite.Group):
 
 
 def game_over():
-    msg = 'Perdiste. Vuelve a intentarlo'
+    msg = 'Game Over'
     text_color=(130, 190, 67)
     text_style = pygame.font.SysFont('Arial',30) #(tipo de letra, tamaño)
     txt_screen = text_style.render(msg, True, text_color)
@@ -85,8 +86,9 @@ def game_over():
     txt_screen_rect.center = [WIDTH/2,HEIGHT/2]
     screen.blit(txt_screen,txt_screen_rect)
     pygame.display.flip()
+    pygame.mixer.Sound.play(sound_gameover)
     time.sleep(5)
-    #sys.exit()
+    sys.exit()
 
 
 def set_score():
@@ -156,6 +158,11 @@ wall=Wall(ladrillos)
 score = 0
 player_lives = 5
 
+#Sound
+sound_pop = pygame.mixer.Sound('sound/pop.wav')
+sound_gameover = pygame.mixer.Sound('sound/game_over.wav')
+sound_error = pygame.mixer.Sound('sound/error.wav')
+
 #Loop (Revisión cíclica de los eventos) => Listener
 while True:
     game_clock.tick(60)
@@ -188,6 +195,7 @@ while True:
             #Afectamos trayectoria
             ball.speed[1] = -ball.speed[1]
         wall.remove(brick)
+        pygame.mixer.Sound.play(sound_pop)
         score += 1
 
     #Call the function game over
@@ -197,6 +205,8 @@ while True:
     #Restar vidas        
     if ball.rect.bottom >= HEIGHT:
         player_lives -= 1
+        if player_lives >= 1: 
+            pygame.mixer.Sound.play(sound_error)
 
     if player_lives == 0:
         game_over()
